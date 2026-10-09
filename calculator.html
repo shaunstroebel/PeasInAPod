@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculate Total Fees - Pawsitive Pet Academy</title>
+    <link rel="stylesheet" href="../CSS/style.css">
+</head>
+<body>
+    <header class="header-container">
+        <img class="logo" src="../Media/logo.jpeg" alt="Pawsitive Pet Academy Logo">
+        <nav class="Content-header">    
+            <a class="header-content" href="index.html">Home</a>
+            <a class="header-content" href="About.html">About Us</a>
+            <a class="header-content" href="Services.html">Courses</a>
+            <a class="header-content" href="calculator.html">Fee Calculator</a>
+            <a class="header-content" href="Contact.html">Contact Us</a>
+        </nav>
+        <a class="button" href="Contact.html">Get In Touch</a>
+    </header>
+
+    <main class="hero-container">
+        <div class="hero-section">
+            <h1>Calculate Course Fees & Get a Quote</h1>
+            <p>Select your desired courses to estimate total tuition including multi-course discounts and VAT.</p>
+        </div>
+    </main>
+
+    <div class="Quote-container">
+        <h2 class="qote">Course Fee Calculator</h2>
+        <form id="calculator-form" onsubmit="event.preventDefault(); calculateTotal();">
+            <h3>Contact Information</h3>
+            <label for="calc-name">Full Name:</label>
+            <input type="text" id="calc-name" required><br><br>
+
+            <label for="calc-phone">Phone Number:</label>
+            <input type="tel" id="calc-phone" required><br><br>
+
+            <label for="calc-email">Email Address:</label>
+            <input type="email" id="calc-email" required><br><br>
+
+            <h3>Select Courses</h3>
+            <h4>Six-Month Professional Programmes (R1,500 each)</h4>
+            <input type="checkbox" class="course-check" value="1500" id="c1" data-name="Canine Obedience Training">
+            <label for="c1">Canine Obedience Training - R1,500</label><br>
+            
+            <input type="checkbox" class="course-check" value="1500" id="c2" data-name="Pet Grooming">
+            <label for="c2">Pet Grooming - R1,500</label><br>
+            
+            <input type="checkbox" class="course-check" value="1500" id="c3" data-name="Animal Behaviour">
+            <label for="c3">Animal Behaviour - R1,500</label><br>
+            
+            <input type="checkbox" class="course-check" value="1500" id="c4" data-name="Pet Business Management">
+            <label for="c4">Pet Business Management - R1,500</label><br><br>
+
+            <h4>Six-Week Short Courses (R750 each)</h4>
+            <input type="checkbox" class="course-check" value="750" id="c5" data-name="Puppy Care">
+            <label for="c5">Puppy Care - R750</label><br>
+            
+            <input type="checkbox" class="course-check" value="750" id="c6" data-name="Pet First Aid">
+            <label for="c6">Pet First Aid - R750</label><br>
+            
+            <input type="checkbox" class="course-check" value="750" id="c7" data-name="Basic Dog Walking">
+            <label for="c7">Basic Dog Walking - R750</label><br><br>
+
+            <button type="button" class="button" onclick="calculateTotal()">Calculate Quote</button>
+        </form>
+
+        <div id="quote-result" style="margin-top: 20px; display: none;">
+            <h3>Quotation Breakdown</h3>
+            <p><strong>Subtotal:</strong> R<span id="subtotal">0.00</span></p>
+            <p><strong>Discount Applied:</strong> <span id="discount-percent">0</span>% (-R<span id="discount-amount">0.00</span>)</p>
+            <p><strong>VAT (15%):</strong> R<span id="vat-amount">0.00</span></p>
+            <p><strong>Total Quoted Fee:</strong> R<span id="total-amount">0.00</span></p>
+            <p><em>*This is a calculated quotation only and does not constitute a formal invoice.</em></p>
+        </div>
+    </div>
+
+    <script>
+        function calculateTotal() {
+            const checkboxes = document.querySelectorAll('.course-check:checked');
+            let selectedCourses = [];
+            let subtotal = 0;
+
+            checkboxes.forEach(cb => {
+                subtotal += parseFloat(cb.value);
+                selectedCourses.push(cb.getAttribute('data-name'));
+            });
+
+            if (selectedCourses.length === 0) {
+                alert('Please select at least one course.');
+                return;
+            }
+
+            let discountPercent = 0;
+            if (selectedCourses.length === 2) {
+                discountPercent = 5;
+            } else if (selectedCourses.length === 3) {
+                discountPercent = 10;
+            } else if (selectedCourses.length > 3) {
+                discountPercent = 15;
+            }
+
+            let discountAmount = subtotal * (discountPercent / 100);
+            let discountedSubtotal = subtotal - discountAmount;
+            let vat = discountedSubtotal * 0.15;
+            let total = discountedSubtotal + vat;
+
+            document.getElementById('subtotal').innerText = subtotal.toFixed(2);
+            document.getElementById('discount-percent').innerText = discountPercent;
+            document.getElementById('discount-amount').innerText = discountAmount.toFixed(2);
+            document.getElementById('vat-amount').innerText = vat.toFixed(2);
+            document.getElementById('total-amount').innerText = total.toFixed(2);
+            document.getElementById('quote-result').style.display = 'block';
+        }
+    </script>
+
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2026 Pawsitive Pet Academy. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
